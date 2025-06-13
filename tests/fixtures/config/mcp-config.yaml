@@ -1,0 +1,10 @@
+# Test configuration file for shel-mcp server
+
+name: shel-mcp-test
+version: 1.0.0
+description: Test configuration for MCP server
+
+paths:
+  prompts: prompts
+  resources: resources
+  tools: tools

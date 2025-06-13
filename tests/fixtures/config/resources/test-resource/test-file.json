@@ -1,0 +1,22 @@
+{
+  "name": "Test JSON Resource",
+  "description": "A JSON file for testing the resource loader",
+  "version": "1.0.0",
+  "testData": {
+    "stringValue": "This is a string",
+    "numberValue": 42,
+    "booleanValue": true,
+    "nullValue": null,
+    "arrayValue": [1, 2, 3, 4, 5],
+    "objectValue": {
+      "key1": "value1",
+      "key2": "value2"
+    }
+  },
+  "metadata": {
+    "author": "Test Author",
+    "created": "2023-01-01T00:00:00Z",
+    "purpose": "Testing the resource loader's ability to handle JSON files",
+    "contentType": "application/json"
+  }
+}

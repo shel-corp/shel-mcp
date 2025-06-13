@@ -1,0 +1,11 @@
+# Main configuration file for shel-mcp server
+
+name: shel-mcp
+version: 1.0.0
+description: Model Context Protocol (MCP) server with configurable tools, resources, and prompts
+
+# Paths to component directories
+paths:
+  prompts: prompts
+  resources: resources
+  tools: tools
