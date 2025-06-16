@@ -1,0 +1,275 @@
+# Prompt Registry Configuration
+# This file defines how prompts should be loaded and registered with the MCP server
+# Following MCP specification 2025-03-26
+
+# Prompt registry metadata
+registry:
+  name: "Custom Development Prompts"
+  description: "Code companion prompts for development workflows"
+  version: "1.0.0"
+
+# Prompt definitions
+prompts:
+  # Code Debugging Prompt
+  - id: "debug"
+    name: "debug"
+    description: "Comprehensive bug fixing and debugging assistance with detailed analysis"
+    category: "debugging"
+    tags: ["debug", "troubleshooting", "error-analysis"]
+    file: "code/debug.md"
+    enabled: true
+    arguments:
+      - name: "code"
+        description: "The code that contains the bug or issue"
+        required: true
+        type: "string"
+      - name: "error_message"
+        description: "Error message or description of the problem"
+        required: false
+        type: "string"
+      - name: "language"
+        description: "Programming language of the code"
+        required: false
+        type: "string"
+      - name: "expected_behavior"
+        description: "What the code should do instead"
+        required: false
+        type: "string"
+      - name: "context"
+        description: "Additional context about when/how the bug occurs"
+        required: false
+        type: "string"
+      - name: "debug_level"
+        description: "Level of debugging assistance needed"
+        required: false
+        type: "string"
+        enum: ["quick-fix", "thorough-analysis", "root-cause-analysis"]
+      - name: "environment_info"
+        description: "Environment details (OS, versions, dependencies)"
+        required: false
+        type: "string"
+
+  # Code Documentation Prompt
+  - id: "document"
+    name: "document"
+    description: "Generate comprehensive documentation for code with customizable format and audience"
+    category: "documentation"
+    tags: ["documentation", "comments", "api-docs"]
+    file: "code/document.md"
+    enabled: true
+    arguments:
+      - name: "code"
+        description: "The code to document"
+        required: true
+        type: "string"
+      - name: "language"
+        description: "Programming language of the code"
+        required: false
+        type: "string"
+      - name: "doc_type"
+        description: "Type of documentation to generate"
+        required: false
+        type: "string"
+        enum: ["api", "inline", "readme", "guide", "reference"]
+      - name: "include_examples"
+        description: "Whether to include usage examples"
+        required: false
+        type: "boolean"
+      - name: "audience"
+        description: "Target audience for the documentation"
+        required: false
+        type: "string"
+        enum: ["developers", "end-users", "maintainers", "beginners"]
+
+  # Code Review Prompt
+  - id: "review"
+    name: "review"
+    description: "Comprehensive code review with quality assessment and improvement suggestions"
+    category: "code-quality"
+    tags: ["review", "quality", "best-practices"]
+    file: "code/review.md"
+    enabled: true
+    arguments:
+      - name: "code"
+        description: "The code to review"
+        required: true
+        type: "string"
+      - name: "language"
+        description: "Programming language of the code"
+        required: false
+        type: "string"
+      - name: "review_type"
+        description: "Type of review to perform"
+        required: false
+        type: "string"
+        enum: ["security", "performance", "maintainability", "comprehensive"]
+      - name: "focus_areas"
+        description: "Specific areas to focus on during review"
+        required: false
+        type: "string"
+
+  # Code Refactoring Prompt
+  - id: "refactor"
+    name: "refactor"
+    description: "Intelligent code refactoring suggestions with pattern improvements"
+    category: "refactoring"
+    tags: ["refactor", "optimization", "patterns"]
+    file: "code/refactor.md"
+    enabled: true
+    arguments:
+      - name: "code"
+        description: "The code to refactor"
+        required: true
+        type: "string"
+      - name: "language"
+        description: "Programming language of the code"
+        required: false
+        type: "string"
+      - name: "refactor_goal"
+        description: "Primary goal of the refactoring"
+        required: false
+        type: "string"
+        enum: ["readability", "performance", "maintainability", "design-patterns"]
+      - name: "constraints"
+        description: "Any constraints or requirements for the refactoring"
+        required: false
+        type: "string"
+
+  # Code Optimization Prompt
+  - id: "optimize"
+    name: "optimize"
+    description: "Performance optimization analysis and recommendations"
+    category: "performance"
+    tags: ["optimization", "performance", "efficiency"]
+    file: "code/optimize.md"
+    enabled: true
+    arguments:
+      - name: "code"
+        description: "The code to optimize"
+        required: true
+        type: "string"
+      - name: "language"
+        description: "Programming language of the code"
+        required: false
+        type: "string"
+      - name: "optimization_target"
+        description: "Primary optimization target"
+        required: false
+        type: "string"
+        enum: ["speed", "memory", "cpu", "network", "comprehensive"]
+      - name: "performance_requirements"
+        description: "Specific performance requirements or constraints"
+        required: false
+        type: "string"
+
+  # Test Generation Prompt
+  - id: "test"
+    name: "test"
+    description: "Comprehensive test generation with multiple testing strategies"
+    category: "testing"
+    tags: ["testing", "unit-tests", "tdd"]
+    file: "code/test.md"
+    enabled: true
+    arguments:
+      - name: "code"
+        description: "The code to generate tests for"
+        required: true
+        type: "string"
+      - name: "language"
+        description: "Programming language of the code"
+        required: false
+        type: "string"
+      - name: "test_type"
+        description: "Type of tests to generate"
+        required: false
+        type: "string"
+        enum: ["unit", "integration", "e2e", "comprehensive"]
+      - name: "testing_framework"
+        description: "Preferred testing framework"
+        required: false
+        type: "string"
+      - name: "coverage_goal"
+        description: "Desired test coverage level"
+        required: false
+        type: "string"
+        enum: ["basic", "thorough", "comprehensive"]
+
+# Prompt categories
+categories:
+  debugging:
+    name: "Debugging & Troubleshooting"
+    description: "Prompts for finding and fixing bugs"
+    icon: "🐛"
+  documentation:
+    name: "Documentation"
+    description: "Prompts for generating code documentation"
+    icon: "📚"
+  code-quality:
+    name: "Code Quality"
+    description: "Prompts for code review and quality assessment"
+    icon: "✅"
+  refactoring:
+    name: "Refactoring"
+    description: "Prompts for code improvement and restructuring"
+    icon: "🔄"
+  performance:
+    name: "Performance"
+    description: "Prompts for code optimization and performance tuning"
+    icon: "⚡"
+  testing:
+    name: "Testing"
+    description: "Prompts for test generation and testing strategies"
+    icon: "🧪"
+
+# Default configuration for all prompts
+defaults:
+  enabled: true
+  validation:
+    requireArguments: true
+    validateTypes: true
+  formatting:
+    # Support markdown formatting in prompts
+    markdown: true
+    # Allow embedded resources
+    allowEmbeddedResources: true
+    # Support multi-modal content
+    multiModal: true
+
+# Loading configuration
+loading:
+  # Scan subdirectories recursively
+  recursive: true
+  # File extensions to scan
+  extensions: [".md", ".txt"]
+  # Frontmatter parsing
+  frontmatter:
+    enabled: true
+    # Extract metadata from YAML frontmatter
+    extractMetadata: true
+    # Convert parameters to MCP arguments format
+    convertParameters: true
+  # Ignore patterns
+  ignore:
+    - "README.md"
+    - "*.draft.md"
+    - "__drafts__/**"
+  # Auto-discovery settings
+  autoDiscovery:
+    enabled: true
+    # Override file-based config if prompt file has different metadata
+    allowOverride: true
+    # Validate against this registry
+    validateAgainstRegistry: true
+
+# Template processing
+templates:
+  # Template engine settings
+  engine: "handlebars"
+  # Allow dynamic content generation
+  dynamicContent: true
+  # Security settings for template processing
+  security:
+    # Disable dangerous template functions
+    restrictedFunctions: true
+    # Sanitize template inputs
+    sanitizeInputs: true

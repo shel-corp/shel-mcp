@@ -1,0 +1,1294 @@
+{
+  "tools": [
+    {
+      "name": "code-analyzer",
+      "path": "/Users/sheltontolbert/repos/shel-mcp/config-custom/tools/development/code-analyzer.js",
+      "valid": true,
+      "issues": []
+    },
+    {
+      "name": "git-simple",
+      "path": "/Users/sheltontolbert/repos/shel-mcp/config-custom/tools/development/git-simple.js",
+      "valid": true,
+      "issues": []
+    }
+  ],
+  "prompts": [
+    {
+      "name": "debug",
+      "path": "/Users/sheltontolbert/repos/shel-mcp/config-custom/prompts/code/debug.md",
+      "valid": true,
+      "issues": [],
+      "mcpArguments": [
+        {
+          "name": "code",
+          "description": "The code that contains the bug or issue",
+          "required": true
+        },
+        {
+          "name": "error_message",
+          "description": "Error message or description of the problem",
+          "required": false
+        },
+        {
+          "name": "language",
+          "description": "Programming language of the code",
+          "required": false
+        },
+        {
+          "name": "expected_behavior",
+          "description": "What the code should do instead",
+          "required": false
+        },
+        {
+          "name": "context",
+          "description": "Additional context about when/how the bug occurs",
+          "required": false
+        },
+        {
+          "name": "debug_level",
+          "description": "Level of debugging assistance needed",
+          "required": false
+        },
+        {
+          "name": "environment_info",
+          "description": "Environment details (OS, versions, dependencies)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "document",
+      "path": "/Users/sheltontolbert/repos/shel-mcp/config-custom/prompts/code/document.md",
+      "valid": true,
+      "issues": [],
+      "mcpArguments": [
+        {
+          "name": "code",
+          "description": "The code to document",
+          "required": true
+        },
+        {
+          "name": "language",
+          "description": "Programming language of the code",
+          "required": false
+        },
+        {
+          "name": "doc_type",
+          "description": "Type of documentation to generate",
+          "required": false
+        },
+        {
+          "name": "include_examples",
+          "description": "Whether to include usage examples",
+          "required": false
+        },
+        {
+          "name": "audience",
+          "description": "Target audience for the documentation",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "optimize",
+      "path": "/Users/sheltontolbert/repos/shel-mcp/config-custom/prompts/code/optimize.md",
+      "valid": true,
+      "issues": [],
+      "mcpArguments": [
+        {
+          "name": "code",
+          "description": "The code to optimize for performance",
+          "required": true
+        },
+        {
+          "name": "language",
+          "description": "Programming language of the code",
+          "required": false
+        },
+        {
+          "name": "optimization_focus",
+          "description": "Specific areas to focus optimization on (cpu, memory, network, database)",
+          "required": false
+        },
+        {
+          "name": "performance_target",
+          "description": "Performance goal or constraint",
+          "required": false
+        },
+        {
+          "name": "current_bottlenecks",
+          "description": "Known performance bottlenecks or issues",
+          "required": false
+        },
+        {
+          "name": "scale_requirements",
+          "description": "Expected scale (users, requests per second, data volume)",
+          "required": false
+        },
+        {
+          "name": "constraints",
+          "description": "Constraints to consider (backwards compatibility, memory limits, etc.)",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "refactor",
+      "path": "/Users/sheltontolbert/repos/shel-mcp/config-custom/prompts/code/refactor.md",
+      "valid": true,
+      "issues": [],
+      "mcpArguments": [
+        {
+          "name": "code",
+          "description": "The code to refactor",
+          "required": true
+        },
+        {
+          "name": "language",
+          "description": "Programming language of the code",
+          "required": false
+        },
+        {
+          "name": "refactor_goals",
+          "description": "Specific refactoring goals (e.g., performance, readability, maintainability)",
+          "required": false
+        },
+        {
+          "name": "preserve_behavior",
+          "description": "Whether to strictly preserve existing behavior",
+          "required": false
+        },
+        {
+          "name": "style_guide",
+          "description": "Coding style guide to follow",
+          "required": false
+        },
+        {
+          "name": "max_changes",
+          "description": "Scope of changes to make",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "review",
+      "path": "/Users/sheltontolbert/repos/shel-mcp/config-custom/prompts/code/review.md",
+      "valid": true,
+      "issues": [],
+      "mcpArguments": [
+        {
+          "name": "code",
+          "description": "The code to review",
+          "required": true
+        },
+        {
+          "name": "language",
+          "description": "Programming language of the code",
+          "required": false
+        },
+        {
+          "name": "focus_areas",
+          "description": "Specific areas to focus on during review (e.g., security, performance, maintainability)",
+          "required": false
+        },
+        {
+          "name": "severity_level",
+          "description": "Level of scrutiny for the review",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "test",
+      "path": "/Users/sheltontolbert/repos/shel-mcp/config-custom/prompts/code/test.md",
+      "valid": true,
+      "issues": [],
+      "mcpArguments": [
+        {
+          "name": "code",
+          "description": "The code to generate tests for",
+          "required": true
+        },
+        {
+          "name": "language",
+          "description": "Programming language of the code",
+          "required": false
+        },
+        {
+          "name": "test_framework",
+          "description": "Testing framework to use (e.g., Jest, PyTest, JUnit)",
+          "required": false
+        },
+        {
+          "name": "test_types",
+          "description": "Types of tests to generate (unit, integration, e2e)",
+          "required": false
+        },
+        {
+          "name": "coverage_level",
+          "description": "Level of test coverage desired",
+          "required": false
+        },
+        {
+          "name": "include_mocks",
+          "description": "Whether to include mock examples",
+          "required": false
+        },
+        {
+          "name": "edge_cases",
+          "description": "Whether to include edge case testing",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "architecture",
+      "path": "/Users/sheltontolbert/repos/shel-mcp/config-custom/prompts/development/architecture.md",
+      "valid": true,
+      "issues": [],
+      "mcpArguments": [
+        {
+          "name": "project_description",
+          "description": "Description of the project or system to analyze",
+          "required": false
+        },
+        {
+          "name": "codebase",
+          "description": "Code or project structure to analyze",
+          "required": false
+        },
+        {
+          "name": "architecture_type",
+          "description": "Type of architecture analysis needed",
+          "required": false
+        },
+        {
+          "name": "technology_stack",
+          "description": "Technologies used or being considered",
+          "required": false
+        },
+        {
+          "name": "scale_requirements",
+          "description": "Expected scale (users, data, transactions)",
+          "required": false
+        },
+        {
+          "name": "constraints",
+          "description": "Technical, business, or resource constraints",
+          "required": false
+        },
+        {
+          "name": "focus_areas",
+          "description": "Specific architectural concerns (performance, security, maintainability)",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "config": [
+    {
+      "name": "mcp-config.yaml",
+      "valid": true,
+      "config": {
+        "name": "shel-mcp-custom",
+        "version": "1.0.0",
+        "description": "Custom MCP server configuration with code companion tools, prompts, and resources following MCP specification",
+        "capabilities": {
+          "tools": {
+            "listChanged": true
+          },
+          "prompts": {
+            "listChanged": true
+          },
+          "resources": {
+            "listChanged": true
+          }
+        },
+        "paths": {
+          "prompts": "prompts",
+          "resources": "resources",
+          "tools": "tools"
+        },
+        "server": {
+          "tools": {
+            "autoDiscovery": true,
+            "extensions": [
+              ".js",
+              ".ts",
+              ".sh"
+            ],
+            "validation": {
+              "requireMcpFormat": true,
+              "validateInputSchema": true,
+              "requireDescriptions": true
+            }
+          },
+          "prompts": {
+            "autoDiscovery": true,
+            "extensions": [
+              ".md",
+              ".txt"
+            ],
+            "frontmatter": {
+              "enabled": true,
+              "extractDescription": true,
+              "convertParameters": true
+            }
+          },
+          "resources": {
+            "autoDiscovery": true,
+            "extensions": [
+              ".md",
+              ".txt",
+              ".json",
+              ".yaml"
+            ]
+          }
+        },
+        "toolConfig": {
+          "defaultTimeout": 30000,
+          "maxConcurrent": 5,
+          "errorHandling": {
+            "verbose": true,
+            "includeStackTrace": false
+          }
+        },
+        "promptConfig": {
+          "templates": {
+            "allowEmbeddedResources": true,
+            "multiModal": true
+          },
+          "validation": {
+            "enforceRequired": true,
+            "typeChecking": true
+          }
+        },
+        "resourceConfig": {
+          "cache": {
+            "enabled": true,
+            "ttl": 300000
+          },
+          "processing": {
+            "autoDetectMimeType": true,
+            "supportBase64": true
+          }
+        },
+        "logging": {
+          "level": "info",
+          "logRegistration": true,
+          "logExecution": false,
+          "includeMetrics": true
+        },
+        "development": {
+          "hotReload": false,
+          "validateMcpCompliance": true,
+          "debugEndpoints": false
+        },
+        "security": {
+          "sandbox": {
+            "enabled": false,
+            "allowedCommands": [
+              "git",
+              "node",
+              "npm"
+            ]
+          },
+          "inputValidation": {
+            "sanitizeInputs": true,
+            "maxInputSize": 1048576
+          }
+        }
+      }
+    },
+    {
+      "name": "server.yaml",
+      "valid": true,
+      "config": {
+        "server": {
+          "name": "shel-mcp-custom",
+          "version": "1.0.0",
+          "description": "Custom MCP server with development tools and code companion prompts",
+          "author": "Shelton Tolbert"
+        },
+        "mcp": {
+          "protocolVersion": "2025-03-26",
+          "capabilities": {
+            "tools": {
+              "listChanged": true
+            },
+            "prompts": {
+              "listChanged": true
+            },
+            "resources": {
+              "listChanged": true
+            },
+            "completion": {
+              "enabled": false
+            },
+            "experimental": {
+              "enabled": false
+            }
+          }
+        },
+        "tools": {
+          "discovery": {
+            "enabled": true,
+            "directories": [
+              "tools"
+            ],
+            "extensions": [
+              ".js",
+              ".ts",
+              ".sh"
+            ],
+            "recursive": true,
+            "ignore": [
+              "*.test.js",
+              "*.spec.js",
+              "*.bak",
+              "node_modules/**",
+              ".git/**"
+            ]
+          },
+          "validation": {
+            "enforceSpecCompliance": true,
+            "requiredFields": [
+              "name",
+              "description",
+              "inputSchema"
+            ],
+            "validateInputSchema": true,
+            "validateJsonSchema": true
+          },
+          "execution": {
+            "defaultTimeout": 30000,
+            "maxConcurrent": 10,
+            "retry": {
+              "enabled": true,
+              "maxAttempts": 2,
+              "backoffMs": 1000
+            },
+            "sandbox": {
+              "enabled": false,
+              "allowedCommands": [
+                "git",
+                "node",
+                "npm",
+                "python",
+                "curl"
+              ]
+            }
+          },
+          "registration": {
+            "logRegistration": true,
+            "preValidation": true,
+            "errorHandling": "warn"
+          }
+        },
+        "prompts": {
+          "discovery": {
+            "enabled": true,
+            "directories": [
+              "prompts"
+            ],
+            "extensions": [
+              ".md",
+              ".txt"
+            ],
+            "recursive": true,
+            "ignore": [
+              "README.md",
+              "*.draft.md",
+              "*.bak"
+            ]
+          },
+          "parsing": {
+            "frontmatter": {
+              "enabled": true,
+              "delimiter": "---",
+              "extractMetadata": true
+            },
+            "templates": {
+              "enabled": true,
+              "engine": "handlebars",
+              "security": {
+                "restrictedHelpers": true,
+                "sanitizeInputs": true
+              }
+            }
+          },
+          "validation": {
+            "enforceSpecCompliance": true,
+            "requiredFields": [
+              "name",
+              "description"
+            ],
+            "validateArguments": true,
+            "validateArgumentTypes": true
+          },
+          "registration": {
+            "logRegistration": true,
+            "preValidation": true,
+            "errorHandling": "warn"
+          }
+        },
+        "resources": {
+          "discovery": {
+            "enabled": true,
+            "directories": [
+              "resources"
+            ],
+            "extensions": [
+              ".md",
+              ".txt",
+              ".json",
+              ".yaml",
+              ".yml"
+            ],
+            "recursive": true
+          },
+          "cache": {
+            "enabled": true,
+            "ttl": 300000,
+            "maxSize": 100,
+            "invalidation": "ttl"
+          },
+          "validation": {
+            "validateUris": true,
+            "validateMimeTypes": true,
+            "maxSize": 10485760
+          }
+        },
+        "logging": {
+          "level": "info",
+          "categories": {
+            "server": true,
+            "tools": true,
+            "prompts": true,
+            "resources": true,
+            "requests": false,
+            "responses": false,
+            "performance": true,
+            "errors": true
+          },
+          "format": {
+            "timestamp": true,
+            "level": true,
+            "component": true,
+            "prettyJson": false
+          },
+          "output": {
+            "console": true,
+            "file": {
+              "enabled": false,
+              "path": "logs/server.log",
+              "maxSize": "10MB",
+              "maxFiles": 5
+            }
+          }
+        },
+        "performance": {
+          "requests": {
+            "maxConcurrent": 50,
+            "timeout": 60000,
+            "queueSize": 100
+          },
+          "memory": {
+            "gcHints": true,
+            "memoryWarnings": true,
+            "maxMemoryMB": 512
+          },
+          "metrics": {
+            "enabled": true,
+            "interval": 30000,
+            "collect": [
+              "requestCount",
+              "responseTime",
+              "memoryUsage",
+              "toolExecutionTime",
+              "errorRate"
+            ]
+          }
+        },
+        "security": {
+          "input": {
+            "sanitize": true,
+            "maxSize": 1048576,
+            "allowedCharacters": "^[\\w\\s\\-_.,!?@#$%^&*()+={}\\[\\]|\\\\:;\"'<>?/~`]+$"
+          },
+          "tools": {
+            "validateParameters": true,
+            "restrictFileSystem": false,
+            "allowedFileExtensions": [
+              ".js",
+              ".ts",
+              ".md",
+              ".txt",
+              ".json",
+              ".yaml"
+            ]
+          },
+          "rateLimit": {
+            "enabled": false,
+            "requestsPerMinute": 60,
+            "burstSize": 10
+          }
+        },
+        "development": {
+          "debug": false,
+          "hotReload": {
+            "enabled": false,
+            "watchDirectories": [
+              "tools",
+              "prompts",
+              "resources"
+            ],
+            "watchExtensions": [
+              ".js",
+              ".ts",
+              ".md",
+              ".yaml",
+              ".yml"
+            ]
+          },
+          "validation": {
+            "strict": true,
+            "failOnErrors": false,
+            "validateMcpSpec": true
+          }
+        },
+        "errorHandling": {
+          "strategy": "graceful",
+          "responses": {
+            "includeDetails": true,
+            "includeStackTrace": false,
+            "sanitizeMessages": true
+          },
+          "recovery": {
+            "enabled": true,
+            "maxAttempts": 3,
+            "strategies": [
+              "retry",
+              "fallback",
+              "skip"
+            ]
+          }
+        },
+        "shutdown": {
+          "timeout": 30000,
+          "cleanup": {
+            "closeConnections": true,
+            "saveState": false,
+            "clearCaches": true
+          }
+        }
+      }
+    },
+    {
+      "name": "tools.yaml",
+      "valid": true,
+      "config": {
+        "registry": {
+          "name": "Custom Development Tools",
+          "description": "Code analysis, git operations, and development workflow tools",
+          "version": "1.0.0"
+        },
+        "tools": [
+          {
+            "id": "code-analyzer",
+            "name": "code-analyzer",
+            "description": "Analyzes code for complexity, maintainability, security issues, and best practices",
+            "category": "development",
+            "tags": [
+              "analysis",
+              "code-quality",
+              "security",
+              "performance"
+            ],
+            "file": "development/code-analyzer.js",
+            "enabled": true,
+            "timeout": 30000,
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "code": {
+                  "type": "string",
+                  "description": "The source code to analyze"
+                },
+                "language": {
+                  "type": "string",
+                  "description": "Programming language of the code (js, ts, py, java, etc.)"
+                },
+                "analysis_type": {
+                  "type": "string",
+                  "enum": [
+                    "complexity",
+                    "security",
+                    "performance",
+                    "maintainability",
+                    "comprehensive"
+                  ],
+                  "description": "Type of analysis to perform"
+                },
+                "include_suggestions": {
+                  "type": "boolean",
+                  "description": "Whether to include improvement suggestions"
+                }
+              },
+              "required": [
+                "code"
+              ]
+            }
+          },
+          {
+            "id": "git-simple",
+            "name": "git-simple",
+            "description": "Simplified Git workflow automation tool for basic repository operations",
+            "category": "version-control",
+            "tags": [
+              "git",
+              "vcs",
+              "workflow"
+            ],
+            "file": "development/git-simple.js",
+            "enabled": true,
+            "timeout": 15000,
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "action": {
+                  "type": "string",
+                  "enum": [
+                    "status",
+                    "branch",
+                    "log",
+                    "diff"
+                  ],
+                  "description": "Git action to perform"
+                },
+                "limit": {
+                  "type": "number",
+                  "description": "Limit for log entries"
+                }
+              },
+              "required": [
+                "action"
+              ]
+            }
+          },
+          {
+            "id": "git-helper",
+            "name": "git-helper",
+            "description": "Advanced Git workflow automation with comprehensive repository management",
+            "category": "version-control",
+            "tags": [
+              "git",
+              "vcs",
+              "automation",
+              "advanced"
+            ],
+            "file": "development/git-helper.sh",
+            "enabled": false,
+            "timeout": 20000,
+            "shell": true,
+            "inputSchema": {
+              "type": "object",
+              "properties": {
+                "action": {
+                  "type": "string",
+                  "enum": [
+                    "status",
+                    "branch",
+                    "commit",
+                    "push",
+                    "pull",
+                    "log",
+                    "diff",
+                    "merge"
+                  ],
+                  "description": "Git action to perform"
+                },
+                "message": {
+                  "type": "string",
+                  "description": "Commit message (for commit action)"
+                },
+                "branch_name": {
+                  "type": "string",
+                  "description": "Branch name (for branch operations)"
+                },
+                "target_branch": {
+                  "type": "string",
+                  "description": "Target branch (for merge operations)"
+                },
+                "file_pattern": {
+                  "type": "string",
+                  "description": "File pattern for operations"
+                },
+                "limit": {
+                  "type": "number",
+                  "description": "Limit for log entries"
+                }
+              },
+              "required": [
+                "action"
+              ]
+            }
+          }
+        ],
+        "categories": {
+          "development": {
+            "name": "Development Tools",
+            "description": "Tools for code analysis, debugging, and development workflows",
+            "icon": "🔧"
+          },
+          "version-control": {
+            "name": "Version Control",
+            "description": "Git and version control operations",
+            "icon": "📝"
+          }
+        },
+        "defaults": {
+          "timeout": 30000,
+          "retries": 1,
+          "errorHandling": {
+            "verbose": true,
+            "includeStackTrace": false
+          },
+          "validation": {
+            "requireMcpFormat": true,
+            "validateInputSchema": true,
+            "requireDescriptions": true
+          }
+        },
+        "loading": {
+          "recursive": true,
+          "extensions": [
+            ".js",
+            ".ts",
+            ".sh"
+          ],
+          "ignore": [
+            "*.test.js",
+            "*.spec.js",
+            "__tests__/**",
+            "node_modules/**"
+          ],
+          "autoDiscovery": {
+            "enabled": true,
+            "allowOverride": true,
+            "validateAgainstRegistry": true
+          }
+        }
+      }
+    },
+    {
+      "name": "prompts.yaml",
+      "valid": true,
+      "config": {
+        "registry": {
+          "name": "Custom Development Prompts",
+          "description": "Code companion prompts for development workflows",
+          "version": "1.0.0"
+        },
+        "prompts": [
+          {
+            "id": "debug",
+            "name": "debug",
+            "description": "Comprehensive bug fixing and debugging assistance with detailed analysis",
+            "category": "debugging",
+            "tags": [
+              "debug",
+              "troubleshooting",
+              "error-analysis"
+            ],
+            "file": "code/debug.md",
+            "enabled": true,
+            "arguments": [
+              {
+                "name": "code",
+                "description": "The code that contains the bug or issue",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "error_message",
+                "description": "Error message or description of the problem",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "language",
+                "description": "Programming language of the code",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "expected_behavior",
+                "description": "What the code should do instead",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "context",
+                "description": "Additional context about when/how the bug occurs",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "debug_level",
+                "description": "Level of debugging assistance needed",
+                "required": false,
+                "type": "string",
+                "enum": [
+                  "quick-fix",
+                  "thorough-analysis",
+                  "root-cause-analysis"
+                ]
+              },
+              {
+                "name": "environment_info",
+                "description": "Environment details (OS, versions, dependencies)",
+                "required": false,
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "id": "document",
+            "name": "document",
+            "description": "Generate comprehensive documentation for code with customizable format and audience",
+            "category": "documentation",
+            "tags": [
+              "documentation",
+              "comments",
+              "api-docs"
+            ],
+            "file": "code/document.md",
+            "enabled": true,
+            "arguments": [
+              {
+                "name": "code",
+                "description": "The code to document",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "language",
+                "description": "Programming language of the code",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "doc_type",
+                "description": "Type of documentation to generate",
+                "required": false,
+                "type": "string",
+                "enum": [
+                  "api",
+                  "inline",
+                  "readme",
+                  "guide",
+                  "reference"
+                ]
+              },
+              {
+                "name": "include_examples",
+                "description": "Whether to include usage examples",
+                "required": false,
+                "type": "boolean"
+              },
+              {
+                "name": "audience",
+                "description": "Target audience for the documentation",
+                "required": false,
+                "type": "string",
+                "enum": [
+                  "developers",
+                  "end-users",
+                  "maintainers",
+                  "beginners"
+                ]
+              }
+            ]
+          },
+          {
+            "id": "review",
+            "name": "review",
+            "description": "Comprehensive code review with quality assessment and improvement suggestions",
+            "category": "code-quality",
+            "tags": [
+              "review",
+              "quality",
+              "best-practices"
+            ],
+            "file": "code/review.md",
+            "enabled": true,
+            "arguments": [
+              {
+                "name": "code",
+                "description": "The code to review",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "language",
+                "description": "Programming language of the code",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "review_type",
+                "description": "Type of review to perform",
+                "required": false,
+                "type": "string",
+                "enum": [
+                  "security",
+                  "performance",
+                  "maintainability",
+                  "comprehensive"
+                ]
+              },
+              {
+                "name": "focus_areas",
+                "description": "Specific areas to focus on during review",
+                "required": false,
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "id": "refactor",
+            "name": "refactor",
+            "description": "Intelligent code refactoring suggestions with pattern improvements",
+            "category": "refactoring",
+            "tags": [
+              "refactor",
+              "optimization",
+              "patterns"
+            ],
+            "file": "code/refactor.md",
+            "enabled": true,
+            "arguments": [
+              {
+                "name": "code",
+                "description": "The code to refactor",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "language",
+                "description": "Programming language of the code",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "refactor_goal",
+                "description": "Primary goal of the refactoring",
+                "required": false,
+                "type": "string",
+                "enum": [
+                  "readability",
+                  "performance",
+                  "maintainability",
+                  "design-patterns"
+                ]
+              },
+              {
+                "name": "constraints",
+                "description": "Any constraints or requirements for the refactoring",
+                "required": false,
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "id": "optimize",
+            "name": "optimize",
+            "description": "Performance optimization analysis and recommendations",
+            "category": "performance",
+            "tags": [
+              "optimization",
+              "performance",
+              "efficiency"
+            ],
+            "file": "code/optimize.md",
+            "enabled": true,
+            "arguments": [
+              {
+                "name": "code",
+                "description": "The code to optimize",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "language",
+                "description": "Programming language of the code",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "optimization_target",
+                "description": "Primary optimization target",
+                "required": false,
+                "type": "string",
+                "enum": [
+                  "speed",
+                  "memory",
+                  "cpu",
+                  "network",
+                  "comprehensive"
+                ]
+              },
+              {
+                "name": "performance_requirements",
+                "description": "Specific performance requirements or constraints",
+                "required": false,
+                "type": "string"
+              }
+            ]
+          },
+          {
+            "id": "test",
+            "name": "test",
+            "description": "Comprehensive test generation with multiple testing strategies",
+            "category": "testing",
+            "tags": [
+              "testing",
+              "unit-tests",
+              "tdd"
+            ],
+            "file": "code/test.md",
+            "enabled": true,
+            "arguments": [
+              {
+                "name": "code",
+                "description": "The code to generate tests for",
+                "required": true,
+                "type": "string"
+              },
+              {
+                "name": "language",
+                "description": "Programming language of the code",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "test_type",
+                "description": "Type of tests to generate",
+                "required": false,
+                "type": "string",
+                "enum": [
+                  "unit",
+                  "integration",
+                  "e2e",
+                  "comprehensive"
+                ]
+              },
+              {
+                "name": "testing_framework",
+                "description": "Preferred testing framework",
+                "required": false,
+                "type": "string"
+              },
+              {
+                "name": "coverage_goal",
+                "description": "Desired test coverage level",
+                "required": false,
+                "type": "string",
+                "enum": [
+                  "basic",
+                  "thorough",
+                  "comprehensive"
+                ]
+              }
+            ]
+          }
+        ],
+        "categories": {
+          "debugging": {
+            "name": "Debugging & Troubleshooting",
+            "description": "Prompts for finding and fixing bugs",
+            "icon": "🐛"
+          },
+          "documentation": {
+            "name": "Documentation",
+            "description": "Prompts for generating code documentation",
+            "icon": "📚"
+          },
+          "code-quality": {
+            "name": "Code Quality",
+            "description": "Prompts for code review and quality assessment",
+            "icon": "✅"
+          },
+          "refactoring": {
+            "name": "Refactoring",
+            "description": "Prompts for code improvement and restructuring",
+            "icon": "🔄"
+          },
+          "performance": {
+            "name": "Performance",
+            "description": "Prompts for code optimization and performance tuning",
+            "icon": "⚡"
+          },
+          "testing": {
+            "name": "Testing",
+            "description": "Prompts for test generation and testing strategies",
+            "icon": "🧪"
+          }
+        },
+        "defaults": {
+          "enabled": true,
+          "validation": {
+            "requireArguments": true,
+            "validateTypes": true
+          },
+          "formatting": {
+            "markdown": true,
+            "allowEmbeddedResources": true,
+            "multiModal": true
+          }
+        },
+        "loading": {
+          "recursive": true,
+          "extensions": [
+            ".md",
+            ".txt"
+          ],
+          "frontmatter": {
+            "enabled": true,
+            "extractMetadata": true,
+            "convertParameters": true
+          },
+          "ignore": [
+            "README.md",
+            "*.draft.md",
+            "__drafts__/**"
+          ],
+          "autoDiscovery": {
+            "enabled": true,
+            "allowOverride": true,
+            "validateAgainstRegistry": true
+          }
+        },
+        "templates": {
+          "engine": "handlebars",
+          "dynamicContent": true,
+          "security": {
+            "restrictedFunctions": true,
+            "sanitizeInputs": true
+          }
+        }
+      }
+    }
+  ],
+  "errors": [],
+  "warnings": [],
+  "summary": {
+    "totalIssues": 0,
+    "criticalIssues": 0,
+    "toolsValid": 2,
+    "promptsValid": 7,
+    "configValid": true
+  }
+}

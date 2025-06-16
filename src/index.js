@@ -1,6 +1,5 @@
-import { ShelMcpServer } from './server';
-import path from 'path';
-import { z } from 'zod';
+const { ShelMcpServer } = require('./server.js');
+const path = require('path');
 
 // Process command-line arguments
 const args = process.argv.slice(2);
@@ -27,24 +26,11 @@ const startServer = async () => {
       await server.init(configDir);
     } catch (err) {
       console.error('Failed to load configuration:', err);
-      console.log('Continuing with default configuration...');
+      console.log('Continuing with minimal default configuration...');
 
-      // Add some default tools and resources if config loading failed
-      server.tool('add', { a: z.number(), b: z.number() }, async ({ a, b }: { a: number, b: number }) => ({
-        content: [{ type: 'text', text: String(a + b) }],
-      }));
-
-      server.prompt('review-code', { code: z.string() }, ({ code }: { code: string }) => ({
-        messages: [
-          {
-            role: 'user',
-            content: {
-              type: 'text',
-              text: `Please review this code:\n\n${code}`,
-            },
-          },
-        ],
-      }));
+      // For now, we'll just log the error and exit
+      // The server needs proper configuration to work
+      process.exit(1);
     }
 
     // Connect to stdin/stdout transport
@@ -55,6 +41,17 @@ const startServer = async () => {
     process.exit(1);
   }
 };
+
+// Handle graceful shutdown
+process.on('SIGINT', async () => {
+  console.log('\nReceived SIGINT, shutting down gracefully...');
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  console.log('\nReceived SIGTERM, shutting down gracefully...');
+  process.exit(0);
+});
 
 // Start the server
 startServer();

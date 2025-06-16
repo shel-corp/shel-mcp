@@ -82,6 +82,24 @@ export class ConfigurationManager implements ConfigManager {
         this.tools = await this.loadTools(path.join(configDir, paths.tools));
       }
     }
+
+    // Also load prompts from prompts.yaml if it exists
+    const promptsYamlPath = path.join(configDir, 'prompts.yaml');
+    try {
+      await fs.access(promptsYamlPath);
+      const yamlPrompts = await this.loadPromptsFromYaml(promptsYamlPath, configDir);
+      // Merge with existing prompts, preferring YAML definitions
+      for (const yamlPrompt of yamlPrompts) {
+        const existingIndex = this.prompts.findIndex(p => p.id === yamlPrompt.id);
+        if (existingIndex >= 0) {
+          this.prompts[existingIndex] = yamlPrompt;
+        } else {
+          this.prompts.push(yamlPrompt);
+        }
+      }
+    } catch (err) {
+      // prompts.yaml doesn't exist, continue with existing prompts
+    }
   }
 
   /**
@@ -128,6 +146,107 @@ export class ConfigurationManager implements ConfigManager {
   }
 
   /**
+   * Load prompts from a YAML configuration file
+   */
+  async loadPromptsFromYaml(yamlPath: string, configDir: string): Promise<PromptConfig[]> {
+    const prompts: PromptConfig[] = [];
+
+    try {
+      const yamlContent = await fs.readFile(yamlPath, 'utf8');
+      const config = yaml.load(yamlContent) as any;
+
+      if (!config.prompts || !Array.isArray(config.prompts)) {
+        console.warn('prompts.yaml does not contain a valid prompts array');
+        return prompts;
+      }
+
+      for (const promptDef of config.prompts) {
+        try {
+          if (!promptDef.id || !promptDef.file) {
+            console.warn('Prompt definition missing required id or file field:', promptDef);
+            continue;
+          }
+
+          // Load the actual prompt content from the file
+          const promptFilePath = path.join(configDir, 'prompts', promptDef.file);
+          let content = '';
+          try {
+            content = await fs.readFile(promptFilePath, 'utf8');
+            // Extract content without frontmatter if present
+            const { content: promptContent } = this.parsePrompt(content);
+            content = promptContent;
+          } catch (err) {
+            console.warn(`Could not load prompt file ${promptFilePath}:`, err);
+            continue;
+          }
+
+          // Convert YAML arguments to Zod parameters
+          const parameters: Record<string, z.ZodTypeAny> = {};
+          if (promptDef.arguments && Array.isArray(promptDef.arguments)) {
+            for (const arg of promptDef.arguments) {
+              if (arg.name && arg.type) {
+                let schema: z.ZodTypeAny;
+                switch (arg.type) {
+                  case 'string':
+                    schema = z.string();
+                    if (arg.enum) schema = schema.refine(val => arg.enum.includes(val));
+                    break;
+                  case 'number':
+                    schema = z.number();
+                    break;
+                  case 'integer':
+                    schema = z.number().int();
+                    break;
+                  case 'boolean':
+                    schema = z.boolean();
+                    break;
+                  case 'array':
+                    schema = z.array(z.string()); // Default to string array
+                    break;
+                  default:
+                    schema = z.string();
+                }
+
+                if (arg.required === false) {
+                  schema = schema.optional();
+                }
+
+                parameters[arg.name] = schema;
+              }
+            }
+          }
+
+          // Create metadata from YAML definition
+          const metadata = {
+            description: promptDef.description,
+            category: promptDef.category,
+            tags: promptDef.tags,
+            author: promptDef.author,
+            enabled: promptDef.enabled !== false, // Default to true
+            name: promptDef.name || promptDef.id,
+            // Store original argument definitions for proper type handling
+            argumentDefinitions: promptDef.arguments || [],
+          };
+
+          prompts.push({
+            id: promptDef.id,
+            path: promptDef.file,
+            content,
+            parameters,
+            metadata,
+          });
+        } catch (err) {
+          console.error(`Error processing prompt definition:`, promptDef, err);
+        }
+      }
+    } catch (err) {
+      console.error(`Error loading prompts from ${yamlPath}:`, err);
+    }
+
+    return prompts;
+  }
+
+  /**
    * Parse a prompt file to extract frontmatter metadata and parameters
    */
   private parsePrompt(content: string): {
@@ -155,11 +274,21 @@ export class ConfigurationManager implements ConfigManager {
           // Extract parameters if defined
           if (parsedFrontmatter.parameters) {
             parameters = this.convertToZodSchema(parsedFrontmatter.parameters);
+            
+            // Store argument definitions for file-based prompts to enable proper type handling
+            metadata.argumentDefinitions = Object.entries(parsedFrontmatter.parameters).map(([name, def]: [string, any]) => ({
+              name,
+              type: def.type || 'string',
+              description: def.description || `Parameter: ${name}`,
+              required: def.required !== false,
+              enum: def.enum
+            }));
+            
             delete parsedFrontmatter.parameters;
           }
 
           // The rest of the frontmatter becomes metadata
-          metadata = parsedFrontmatter;
+          metadata = { ...metadata, ...parsedFrontmatter };
         } catch (err) {
           console.warn('Error parsing frontmatter, ignoring:', err);
         }
@@ -333,17 +462,31 @@ export class ConfigurationManager implements ConfigManager {
         }
 
         // Check for required properties
-        if (!tool.name || !tool.handler || !tool.parameters) {
+        if (!tool.name || !tool.handler) {
           console.warn(
-            `Tool file ${file} is missing required properties (name, handler, or parameters)`,
+            `Tool file ${file} is missing required properties (name, handler)`,
           );
           continue;
         }
 
-        // Convert parameters to Zod schema if they aren't already
-        let parameters = tool.parameters;
-        if (!(tool.parameters instanceof z.ZodType)) {
-          parameters = this.convertToZodSchema(tool.parameters);
+        // Handle both old 'parameters' format and new 'inputSchema' format
+        let parameters: Record<string, z.ZodTypeAny> = {};
+        
+        if (tool.inputSchema) {
+          // New MCP format with inputSchema
+          parameters = this.convertJsonSchemaToZod(tool.inputSchema);
+        } else if (tool.parameters) {
+          // Legacy format with parameters
+          if (!(tool.parameters instanceof z.ZodType)) {
+            parameters = this.convertToZodSchema(tool.parameters);
+          } else {
+            parameters = tool.parameters;
+          }
+        } else {
+          console.warn(
+            `Tool file ${file} is missing inputSchema or parameters`,
+          );
+          continue;
         }
 
         tools.push({
@@ -351,6 +494,7 @@ export class ConfigurationManager implements ConfigManager {
           path: relativePath,
           description: tool.description || `Tool from ${relativePath}`,
           parameters,
+          inputSchema: tool.inputSchema, // Store original inputSchema if present
           handler: tool.handler,
         });
       } catch (err) {
@@ -371,6 +515,8 @@ export class ConfigurationManager implements ConfigManager {
         let description = `Tool from ${relativePath}`;
         let parameters: Record<string, z.ZodTypeAny> = {};
 
+        let originalInputSchema: any = null;
+        
         try {
           const { stdout } = await execFileAsync(file, ['--mcp-metadata']);
           const metadata = JSON.parse(stdout);
@@ -381,6 +527,9 @@ export class ConfigurationManager implements ConfigManager {
 
           if (metadata.parameters) {
             parameters = this.convertToZodSchema(metadata.parameters);
+            
+            // Also store original inputSchema format for proper type preservation
+            originalInputSchema = this.convertParametersToInputSchema(metadata.parameters);
           }
         } catch (err) {
           console.warn(`Could not get metadata from script ${file}, using defaults`);
@@ -412,6 +561,7 @@ export class ConfigurationManager implements ConfigManager {
           path: relativePath,
           description,
           parameters,
+          inputSchema: originalInputSchema, // Store original inputSchema for type preservation
           handler,
           isScript: true,
           scriptPath: file,
@@ -454,6 +604,101 @@ export class ConfigurationManager implements ConfigManager {
     );
 
     return files.flat();
+  }
+
+  /**
+   * Convert parameter definitions to JSON Schema format preserving types
+   */
+  private convertParametersToInputSchema(parameters: Record<string, any>): any {
+    const properties: Record<string, any> = {};
+    const required: string[] = [];
+
+    for (const [key, def] of Object.entries(parameters)) {
+      if (typeof def === 'object' && def !== null) {
+        const propertySchema: any = {
+          type: def.type || 'string',
+          description: def.description || `Parameter: ${key}`
+        };
+
+        // Include enum values if present
+        if (def.enum) {
+          propertySchema.enum = def.enum;
+        }
+
+        properties[key] = propertySchema;
+
+        // Add to required if not explicitly optional
+        if (def.required !== false) {
+          required.push(key);
+        }
+      }
+    }
+
+    return {
+      type: 'object',
+      properties,
+      required,
+      additionalProperties: false,
+      $schema: 'http://json-schema.org/draft-07/schema#'
+    };
+  }
+
+  /**
+   * Convert JSON Schema to Zod schema
+   */
+  private convertJsonSchemaToZod(jsonSchema: any): Record<string, z.ZodTypeAny> {
+    const zodSchemas: Record<string, z.ZodTypeAny> = {};
+
+    if (!jsonSchema.properties) {
+      return zodSchemas;
+    }
+
+    const required = jsonSchema.required || [];
+
+    for (const [key, schemaDef] of Object.entries(jsonSchema.properties)) {
+      const def = schemaDef as any;
+      let schema: z.ZodTypeAny;
+
+      try {
+        switch (def.type) {
+          case 'string':
+            schema = z.string();
+            if (def.enum) {
+              schema = z.enum(def.enum);
+            }
+            break;
+          case 'number':
+            schema = z.number();
+            break;
+          case 'integer':
+            schema = z.number().int();
+            break;
+          case 'boolean':
+            schema = z.boolean();
+            break;
+          case 'array':
+            schema = z.array(z.any());
+            break;
+          case 'object':
+            schema = z.record(z.unknown());
+            break;
+          default:
+            schema = z.any();
+        }
+
+        // Handle optional fields
+        if (!required.includes(key)) {
+          schema = schema.optional();
+        }
+
+        zodSchemas[key] = schema;
+      } catch (err) {
+        console.warn(`Error converting JSON schema property ${key} to Zod:`, err);
+        zodSchemas[key] = z.any().optional();
+      }
+    }
+
+    return zodSchemas;
   }
 
   /**

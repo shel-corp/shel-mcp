@@ -1,0 +1,136 @@
+# Tool Registry Configuration
+# This file defines how tools should be loaded and registered with the MCP server
+# Following MCP specification 2025-03-26
+
+# Tool registry metadata
+registry:
+  name: "Custom Development Tools"
+  description: "Code analysis, git operations, and development workflow tools"
+  version: "1.0.0"
+
+# Tool definitions
+tools:
+  # Code Analysis Tool
+  - id: "code-analyzer"
+    name: "code-analyzer"
+    description: "Analyzes code for complexity, maintainability, security issues, and best practices"
+    category: "development"
+    tags: ["analysis", "code-quality", "security", "performance"]
+    file: "development/code-analyzer.js"
+    enabled: true
+    timeout: 30000
+    inputSchema:
+      type: "object"
+      properties:
+        code:
+          type: "string"
+          description: "The source code to analyze"
+        language:
+          type: "string"
+          description: "Programming language of the code (js, ts, py, java, etc.)"
+        analysis_type:
+          type: "string"
+          enum: ["complexity", "security", "performance", "maintainability", "comprehensive"]
+          description: "Type of analysis to perform"
+        include_suggestions:
+          type: "boolean"
+          description: "Whether to include improvement suggestions"
+      required: ["code"]
+
+  # Git Simple Tool
+  - id: "git-simple"
+    name: "git-simple"
+    description: "Simplified Git workflow automation tool for basic repository operations"
+    category: "version-control"
+    tags: ["git", "vcs", "workflow"]
+    file: "development/git-simple.js"
+    enabled: true
+    timeout: 15000
+    inputSchema:
+      type: "object"
+      properties:
+        action:
+          type: "string"
+          enum: ["status", "branch", "log", "diff"]
+          description: "Git action to perform"
+        limit:
+          type: "number"
+          description: "Limit for log entries"
+      required: ["action"]
+
+  # Git Helper Tool (Shell-based)
+  - id: "git-helper"
+    name: "git-helper"
+    description: "Advanced Git workflow automation with comprehensive repository management"
+    category: "version-control"
+    tags: ["git", "vcs", "automation", "advanced"]
+    file: "development/git-helper.sh"
+    enabled: false  # Disabled due to dependency issues
+    timeout: 20000
+    shell: true
+    inputSchema:
+      type: "object"
+      properties:
+        action:
+          type: "string"
+          enum: ["status", "branch", "commit", "push", "pull", "log", "diff", "merge"]
+          description: "Git action to perform"
+        message:
+          type: "string"
+          description: "Commit message (for commit action)"
+        branch_name:
+          type: "string"
+          description: "Branch name (for branch operations)"
+        target_branch:
+          type: "string"
+          description: "Target branch (for merge operations)"
+        file_pattern:
+          type: "string"
+          description: "File pattern for operations"
+        limit:
+          type: "number"
+          description: "Limit for log entries"
+      required: ["action"]
+
+# Tool categories
+categories:
+  development:
+    name: "Development Tools"
+    description: "Tools for code analysis, debugging, and development workflows"
+    icon: "🔧"
+  version-control:
+    name: "Version Control"
+    description: "Git and version control operations"
+    icon: "📝"
+
+# Default configuration for all tools
+defaults:
+  timeout: 30000
+  retries: 1
+  errorHandling:
+    verbose: true
+    includeStackTrace: false
+  validation:
+    requireMcpFormat: true
+    validateInputSchema: true
+    requireDescriptions: true
+
+# Loading configuration
+loading:
+  # Scan subdirectories recursively
+  recursive: true
+  # File extensions to scan
+  extensions: [".js", ".ts", ".sh"]
+  # Ignore patterns
+  ignore:
+    - "*.test.js"
+    - "*.spec.js"
+    - "__tests__/**"
+    - "node_modules/**"
+  # Auto-discovery settings
+  autoDiscovery:
+    enabled: true
+    # Override file-based config if tool file has different metadata
+    allowOverride: true
+    # Validate against this registry
+    validateAgainstRegistry: true

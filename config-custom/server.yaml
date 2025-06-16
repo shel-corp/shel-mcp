@@ -1,0 +1,353 @@
+# MCP Server Startup Configuration
+# This file defines server-specific settings for the shel-mcp custom configuration
+# Following MCP specification 2025-03-26
+
+# Server identification
+server:
+  name: "shel-mcp-custom"
+  version: "1.0.0"
+  description: "Custom MCP server with development tools and code companion prompts"
+  author: "Shelton Tolbert"
+
+# MCP Protocol Configuration
+mcp:
+  # Protocol version
+  protocolVersion: "2025-03-26"
+  
+  # Server capabilities declaration
+  capabilities:
+    tools:
+      # Notify clients when tool list changes
+      listChanged: true
+    prompts:
+      # Notify clients when prompt list changes
+      listChanged: true
+    resources:
+      # Notify clients when resource list changes
+      listChanged: true
+    completion:
+      # Support argument completion
+      enabled: false
+    experimental:
+      # Enable experimental features
+      enabled: false
+
+# Tool Management
+tools:
+  # Tool discovery and loading
+  discovery:
+    # Automatically scan for tools
+    enabled: true
+    # Directories to scan (relative to config directory)
+    directories:
+      - "tools"
+    # File extensions to consider
+    extensions: [".js", ".ts", ".sh"]
+    # Recursive directory scanning
+    recursive: true
+    # Ignore patterns
+    ignore:
+      - "*.test.js"
+      - "*.spec.js"
+      - "*.bak"
+      - "node_modules/**"
+      - ".git/**"
+
+  # Tool validation
+  validation:
+    # Enforce MCP specification compliance
+    enforceSpecCompliance: true
+    # Required fields for tools
+    requiredFields:
+      - "name"
+      - "description"
+      - "inputSchema"
+    # Validate inputSchema structure
+    validateInputSchema: true
+    # Check for proper JSON Schema format
+    validateJsonSchema: true
+
+  # Tool execution
+  execution:
+    # Default timeout for tool execution (milliseconds)
+    defaultTimeout: 30000
+    # Maximum concurrent tool executions
+    maxConcurrent: 10
+    # Retry configuration
+    retry:
+      enabled: true
+      maxAttempts: 2
+      backoffMs: 1000
+    # Sandboxing (if supported)
+    sandbox:
+      enabled: false
+      allowedCommands: ["git", "node", "npm", "python", "curl"]
+
+  # Tool registration
+  registration:
+    # Log tool registration details
+    logRegistration: true
+    # Validate tool format before registration
+    preValidation: true
+    # Handle registration errors
+    errorHandling: "warn" # "error", "warn", "ignore"
+
+# Prompt Management
+prompts:
+  # Prompt discovery and loading
+  discovery:
+    # Automatically scan for prompts
+    enabled: true
+    # Directories to scan (relative to config directory)
+    directories:
+      - "prompts"
+    # File extensions to consider
+    extensions: [".md", ".txt"]
+    # Recursive directory scanning
+    recursive: true
+    # Ignore patterns
+    ignore:
+      - "README.md"
+      - "*.draft.md"
+      - "*.bak"
+
+  # Prompt parsing
+  parsing:
+    # Enable YAML frontmatter parsing
+    frontmatter:
+      enabled: true
+      # Frontmatter delimiter
+      delimiter: "---"
+      # Extract metadata from frontmatter
+      extractMetadata: true
+    # Template processing
+    templates:
+      enabled: true
+      # Template engine
+      engine: "handlebars"
+      # Security settings
+      security:
+        restrictedHelpers: true
+        sanitizeInputs: true
+
+  # Prompt validation
+  validation:
+    # Enforce MCP specification compliance
+    enforceSpecCompliance: true
+    # Required fields for prompts
+    requiredFields:
+      - "name"
+      - "description"
+    # Validate argument structure
+    validateArguments: true
+    # Check for proper argument definitions
+    validateArgumentTypes: true
+
+  # Prompt registration
+  registration:
+    # Log prompt registration details
+    logRegistration: true
+    # Validate prompt format before registration
+    preValidation: true
+    # Handle registration errors
+    errorHandling: "warn" # "error", "warn", "ignore"
+
+# Resource Management
+resources:
+  # Resource discovery and loading
+  discovery:
+    # Automatically scan for resources
+    enabled: true
+    # Directories to scan (relative to config directory)
+    directories:
+      - "resources"
+    # File extensions to consider
+    extensions: [".md", ".txt", ".json", ".yaml", ".yml"]
+    # Recursive directory scanning
+    recursive: true
+
+  # Resource caching
+  cache:
+    # Enable resource caching
+    enabled: true
+    # Cache TTL in milliseconds
+    ttl: 300000 # 5 minutes
+    # Maximum cache size
+    maxSize: 100
+    # Cache invalidation strategy
+    invalidation: "ttl" # "ttl", "manual", "never"
+
+  # Resource validation
+  validation:
+    # Validate resource URIs
+    validateUris: true
+    # Check MIME types
+    validateMimeTypes: true
+    # Maximum resource size (bytes)
+    maxSize: 10485760 # 10MB
+
+# Logging Configuration
+logging:
+  # Log level
+  level: "info" # "debug", "info", "warn", "error"
+  
+  # Log categories
+  categories:
+    server: true
+    tools: true
+    prompts: true
+    resources: true
+    requests: false
+    responses: false
+    performance: true
+    errors: true
+
+  # Log formatting
+  format:
+    # Include timestamps
+    timestamp: true
+    # Include log levels
+    level: true
+    # Include component names
+    component: true
+    # Pretty print JSON
+    prettyJson: false
+
+  # Log output
+  output:
+    # Log to console
+    console: true
+    # Log to file
+    file:
+      enabled: false
+      path: "logs/server.log"
+      maxSize: "10MB"
+      maxFiles: 5
+
+# Performance Configuration
+performance:
+  # Request handling
+  requests:
+    # Maximum concurrent requests
+    maxConcurrent: 50
+    # Request timeout (milliseconds)
+    timeout: 60000
+    # Queue size for pending requests
+    queueSize: 100
+
+  # Memory management
+  memory:
+    # Enable garbage collection hints
+    gcHints: true
+    # Memory usage warnings
+    memoryWarnings: true
+    # Maximum memory usage (MB)
+    maxMemoryMB: 512
+
+  # Metrics collection
+  metrics:
+    # Enable performance metrics
+    enabled: true
+    # Metrics collection interval (milliseconds)
+    interval: 30000
+    # Metrics to collect
+    collect:
+      - "requestCount"
+      - "responseTime"
+      - "memoryUsage"
+      - "toolExecutionTime"
+      - "errorRate"
+
+# Security Configuration
+security:
+  # Input validation
+  input:
+    # Sanitize all inputs
+    sanitize: true
+    # Maximum input size (bytes)
+    maxSize: 1048576 # 1MB
+    # Allowed characters (regex)
+    allowedCharacters: "^[\\w\\s\\-_.,!?@#$%^&*()+={}\\[\\]|\\\\:;\"'<>?/~`]+$"
+
+  # Tool execution security
+  tools:
+    # Validate tool parameters
+    validateParameters: true
+    # Restrict file system access
+    restrictFileSystem: false
+    # Allowed file extensions for file operations
+    allowedFileExtensions: [".js", ".ts", ".md", ".txt", ".json", ".yaml"]
+
+  # Rate limiting
+  rateLimit:
+    # Enable rate limiting
+    enabled: false
+    # Requests per minute
+    requestsPerMinute: 60
+    # Burst allowance
+    burstSize: 10
+
+# Development Settings
+development:
+  # Debug mode
+  debug: false
+  
+  # Hot reload
+  hotReload:
+    # Enable hot reload for development
+    enabled: false
+    # Watch directories for changes
+    watchDirectories:
+      - "tools"
+      - "prompts"
+      - "resources"
+    # File extensions to watch
+    watchExtensions: [".js", ".ts", ".md", ".yaml", ".yml"]
+
+  # Validation settings
+  validation:
+    # Strict validation mode
+    strict: true
+    # Fail on validation errors
+    failOnErrors: false
+    # Validate against MCP specification
+    validateMcpSpec: true
+
+# Error Handling
+errorHandling:
+  # Global error handling strategy
+  strategy: "graceful" # "graceful", "strict", "permissive"
+  
+  # Error responses
+  responses:
+    # Include error details in responses
+    includeDetails: true
+    # Include stack traces
+    includeStackTrace: false
+    # Sanitize error messages
+    sanitizeMessages: true
+
+  # Error recovery
+  recovery:
+    # Attempt to recover from errors
+    enabled: true
+    # Maximum recovery attempts
+    maxAttempts: 3
+    # Recovery strategies
+    strategies:
+      - "retry"
+      - "fallback"
+      - "skip"
+
+# Shutdown Configuration
+shutdown:
+  # Graceful shutdown timeout (milliseconds)
+  timeout: 30000
+  # Cleanup operations
+  cleanup:
+    # Close database connections
+    closeConnections: true
+    # Save state
+    saveState: false
+    # Clear caches
+    clearCaches: true

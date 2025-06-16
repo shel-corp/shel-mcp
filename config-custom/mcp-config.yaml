@@ -1,0 +1,132 @@
+# Custom MCP Server Configuration
+# This configuration defines tools, prompts, and resources for the shel-mcp server
+# Updated to support MCP specification 2025-03-26
+
+name: shel-mcp-custom
+version: 1.0.0
+description: Custom MCP server configuration with code companion tools, prompts, and resources following MCP specification
+
+# Server capabilities
+capabilities:
+  tools:
+    listChanged: true
+  prompts:
+    listChanged: true
+  resources:
+    listChanged: true
+
+# Paths to component directories
+paths:
+  prompts: prompts
+  resources: resources
+  tools: tools
+
+# Server configuration
+server:
+  # Tool loading configuration
+  tools:
+    # Automatically discover tools from directories
+    autoDiscovery: true
+    # Supported file extensions for tools
+    extensions: ['.js', '.ts', '.sh']
+    # Validation settings
+    validation:
+      # Require MCP-compliant format
+      requireMcpFormat: true
+      # Validate inputSchema structure
+      validateInputSchema: true
+      # Ensure descriptions are present
+      requireDescriptions: true
+
+  # Prompt loading configuration  
+  prompts:
+    # Automatically discover prompts from directories
+    autoDiscovery: true
+    # Supported file extensions for prompts
+    extensions: ['.md', '.txt']
+    # YAML frontmatter parsing
+    frontmatter:
+      enabled: true
+      # Extract description from frontmatter
+      extractDescription: true
+      # Convert parameters to MCP arguments format
+      convertParameters: true
+
+  # Resource loading configuration
+  resources:
+    autoDiscovery: true
+    extensions: ['.md', '.txt', '.json', '.yaml']
+
+# Tool-specific configuration
+toolConfig:
+  # Default timeout for tool execution (milliseconds)
+  defaultTimeout: 30000
+  # Maximum concurrent tool executions
+  maxConcurrent: 5
+  # Error handling
+  errorHandling:
+    # Return detailed error messages
+    verbose: true
+    # Include stack traces in development
+    includeStackTrace: false
+
+# Prompt-specific configuration
+promptConfig:
+  # Default prompt template settings
+  templates:
+    # Allow embedded resources in prompts
+    allowEmbeddedResources: true
+    # Support multi-modal content (text, image, audio)
+    multiModal: true
+  # Argument validation
+  validation:
+    # Validate required arguments
+    enforceRequired: true
+    # Type checking for arguments
+    typeChecking: true
+
+# Resource-specific configuration
+resourceConfig:
+  # Caching settings
+  cache:
+    enabled: true
+    ttl: 300000  # 5 minutes
+  # Content processing
+  processing:
+    # Automatically detect MIME types
+    autoDetectMimeType: true
+    # Support base64 encoding for binary content
+    supportBase64: true
+
+# Logging configuration
+logging:
+  level: info
+  # Log tool/prompt registration details
+  logRegistration: true
+  # Log tool/prompt execution
+  logExecution: false
+  # Include performance metrics
+  includeMetrics: true
+
+# Development settings
+development:
+  # Hot reload configuration changes
+  hotReload: false
+  # Validate MCP compliance on startup
+  validateMcpCompliance: true
+  # Enable debug endpoints
+  debugEndpoints: false
+
+# Security settings
+security:
+  # Tool execution sandboxing
+  sandbox:
+    enabled: false
+    # Allowed system commands for shell tools
+    allowedCommands: ['git', 'node', 'npm']
+  # Input validation
+  inputValidation:
+    # Sanitize user inputs
+    sanitizeInputs: true
+    # Maximum input size (bytes)
+    maxInputSize: 1048576  # 1MB

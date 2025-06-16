@@ -62,6 +62,7 @@ export interface ToolConfig {
   path: string;
   description: string;
   parameters: Record<string, z.ZodTypeAny>;
+  inputSchema?: any; // JSON Schema for MCP format
   handler: (...args: any[]) => Promise<any>;
   isScript?: boolean; // Indicates if this is a shell script
   scriptPath?: string; // Path to the script if isScript is true
