@@ -107,15 +107,8 @@ export class ShelMcpServer {
           prompt.id,
           stringSchema as any,
           async (args: any) => {
-            // Replace placeholders in the content with parameters
-            let processedContent = prompt.content;
-            if (args) {
-              for (const [key, value] of Object.entries(args)) {
-                const placeholder = `{{${key}}}`;
-                const strValue = String(value);
-                processedContent = processedContent.replace(new RegExp(placeholder, 'g'), strValue);
-              }
-            }
+            // Process template with conditional blocks and loops
+            let processedContent = this.processTemplate(prompt.content, args || {});
 
             return {
               description: prompt.metadata?.description || `Executed prompt: ${prompt.id}`,
@@ -148,7 +141,7 @@ export class ShelMcpServer {
                   role: 'user',
                   content: {
                     type: 'text',
-                    text: prompt.content,
+                    text: this.processTemplate(prompt.content, {}),
                   },
                 },
               ],
@@ -269,6 +262,15 @@ export class ShelMcpServer {
     return argumentsList;
   }
 
+  /**
+   * Process template with conditional blocks, loops, and parameter substitution
+   * Uses a proper parser/interpreter instead of regex for robust parsing
+   */
+  private processTemplate(content: string, args: Record<string, any>): string {
+    // Import and use the new template parser
+    const { parseTemplate } = require('../template-parser.js');
+    return parseTemplate(content, args);
+  }
 
   /**
    * Register all resources from configuration
